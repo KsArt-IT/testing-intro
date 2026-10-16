@@ -27,9 +27,16 @@ function addToCart(cart, product, count) {
         : [...cart, { id: product.id, name: product.name, price: product.price, stock: product.stock, quantity: count }]
 }
 
-function changeQuantity() {
-    return notImplemented()
+function changeQuantity(cart, id, quantity) {
+    if (!Number.isInteger(quantity) || quantity <= 0) throwCountError()
+
+    const existingItem = cart.find((i) => i.id === id)
+    if (!existingItem) return cart
+
+    if (quantity > existingItem.stock) throwStockError()
+    return cart.map((i) => (i.id === id ? { ...i, quantity: quantity } : i))
 }
+
 function removeFromCart() {
     return notImplemented()
 }
