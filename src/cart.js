@@ -4,10 +4,6 @@ const DISCOUNT_MIN = 20_000
 const DELIVERY_COST = 30_000
 const DELIVERY_FREE = 50_000
 
-function notImplemented() {
-    throw new Error("Корзина ещё не реализована. Сначала прочитайте тесты.")
-}
-
 function throwCountError() {
     throw new RangeError("Нельзя меньше 1.")
 }
@@ -45,8 +41,16 @@ function calculateCartSubtotal(cart) {
     return cart.reduce((sum, i) => sum + i.price * i.quantity, 0)
 }
 
-function calculateOrderTotal() {
-    return notImplemented()
+function calculateOrderTotal(cart, sale = "") {
+    const order = {}
+    order.subtotal = calculateCartSubtotal(cart)
+    order.discount =
+        order.subtotal >= DISCOUNT_MIN && sale === DISCOUNT_PROMO_10
+            ? Math.round(order.subtotal * DISCOUNT_PROMO_10_RATE)
+            : 0
+    order.delivery = order.subtotal >= DELIVERY_FREE ? 0 : DELIVERY_COST
+    order.total = order.subtotal + order.delivery - order.discount
+    return order
 }
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal }
