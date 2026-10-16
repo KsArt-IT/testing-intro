@@ -37,9 +37,10 @@ function changeQuantity(cart, id, quantity) {
     return cart.map((i) => (i.id === id ? { ...i, quantity: quantity } : i))
 }
 
-function removeFromCart() {
-    return notImplemented()
+function removeFromCart(cart, id) {
+    return cart.filter((i) => i.id !== id)
 }
+
 function calculateCartSubtotal() {
     return notImplemented()
 }
